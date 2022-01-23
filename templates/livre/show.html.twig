@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre
+{% endblock %}
+
+{% block stylesheets %}
+<style> 
+     
+ body { 
+    background-color:#d4dae0; 
+      }   
+</style> 
+ {% endblock %}
+
+{% block body %}
+<div class="row"> 
+	<div class="col-9">
+	<h1 style=" text-align: center;">Livre</h1>
+	</div>
+	<div class="col" style="margin-top: 40px;">
+		{% if is_granted('ROLE_ADMIN') %}
+		<a class="btn btn-success" href="{{ path('livre_edit', {'id': livre.id}) }}"><i class="bi bi-pen" style="color:white;font-size:20px;"></i></a>
+
+		{{ include('livre/_delete_form.html.twig') }}
+	{% endif %}
+	</div>
+</div>
+<div class="container-fluid"> 
+    <div class="row justify-content-center"> 
+        <div class="col-md-10"> 
+            <div class="card"> 
+				<table class="table">
+					<tbody>
+						<tr style=" text-align: center; background-color:rgb(66, 163, 207)">
+							<th>Id</th>
+							<td>{{ livre.id }}</td>
+						</tr>
+						<tr>
+							<th>Isbn</th>
+							<td>{{ livre.isbn }}</td>
+						</tr>
+						<tr>
+							<th>Titre</th>
+							<td>{{ livre.titre }}</td>
+						</tr>
+						<tr>
+							<th>Nombre pages</th>
+							<td>{{ livre.nombrePages }}</td>
+						</tr>
+						<tr>
+							<th>Date de parution</th>
+							<td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
+						</tr>
+						<tr>
+							<th>Note</th>
+							<td>{{ livre.note }}</td>
+						</tr>
+						<tr>
+							<th>Genres</th>
+							<td>
+								{% for genre in livre.genres %}
+									<span>
+										{{ genre }}
+									</span><br>
+								{% endfor %}
+							</td>
+						</tr>
+						<tr>
+							<th>Auteurs</th>
+							<td>
+								{% for auteur in livre.auteurs %}
+									<span>
+										{{ auteur }}
+									</span><br>
+								{% endfor %}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	     </div>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auteur
+{% endblock %}
+{% block stylesheets %}
+<style> 
+     
+ body { 
+    background-color:#d4dae0; 
+      }   
+</style> 
+ {% endblock %}
+{% block body %}
+<div class="row">
+<div class="col-9">
+	<h1 style="text-align: center;">Auteur</h1>
+</div>
+<div class="col" style="margin-top: 40px;">
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class="btn btn-success" href="{{ path('auteur_edit', {'id': auteur.id}) }}"><i class="bi bi-pen" style="color:white;font-size:20px;"></i></a>
+
+		{{ include('auteur/_delete_form.html.twig') }}
+	{% endif %}
+</div>
+</div>
+<div class="container-fluid"> 
+    <div class="row justify-content-center"> 
+        <div class="col-md-10"> 
+            <div class="card"> 
+					<table class="table">
+						<tbody>
+							<tr style=" text-align: center; background-color:rgb(66, 163, 207)">
+								<th>Id</th>
+								<td>{{ auteur.id }}</td>
+							</tr>
+							<tr>
+								<th>Nom et Prenom</th>
+								<td>{{ auteur.nomPrenom }}</td>
+							</tr>
+							<tr>
+								<th>Sexe</th>
+								<td>{{ auteur.sexe }}</td>
+							</tr>
+							<tr>
+								<th>Date de naissance</th>
+								<td>{{ auteur.dateDeNaissance ? auteur.dateDeNaissance|date('Y-m-d') : '' }}</td>
+							</tr>
+							<tr>
+								<th>Nationalite</th>
+								<td>{{ auteur.nationalite }}</td>
+							</tr>
+							<tr>
+								<th>Livres</th>
+								<td>
+									{% for livre in auteur.livres %}
+										<span>
+											{{ livre }}
+										</span><br>
+									{% endfor %}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>		
+</div>
+
+
+
+{% endblock %}

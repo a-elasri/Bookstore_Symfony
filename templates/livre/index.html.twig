@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres
+{% endblock %}
+
+{% block stylesheets %}
+<style> 
+     
+ body { 
+    background-color:#d4dae0; 
+      }   
+</style> 
+ {% endblock %}
+
+{% block javascripts %}
+	<script src="/js/main.js"></script>
+	<script src="/js/pagination.js"></script>
+
+{% endblock %}
+
+{% block body %}
+	<h1 style="text-align: center; font-size:3em;font-weight:700;">Livres</h1>
+
+<div class="row">
+<div class="col-sm-2" style="padding:0px 20px 30px 30px; width: 300px; ">
+
+		<div style="margin-bottom: 50px; margin-left: 35px">
+				<img src="/logo1.png" width="200px" height="200px">
+		</div>
+				<form method="POST" onsubmit="list(event)">
+					<span>Lister les livres entre deux années 
+					</span>
+					<input id="dateMin" type="number" class="form-control">
+					<input id="dateMax" type="number" class="form-control">
+					<button class="btn btn-primary my-2">Lister</button>
+				</form>
+
+				<span>Filter selon</span>
+				<select class="form-select mt-2" onchange="filtrerParNote(event)">
+					<option selected>Note</option>
+					{% for i in 0..20 %}
+						<option value="{{ i }}">{{ i }}</option>
+					{% endfor %}
+				</select>
+				<select class="form-select mt-2" onchange="filtrerParDate(event)">
+					<option selected>Date de publication</option>
+					{% for date in dates|sort  %}
+						<option value="{{date.date_de_parution|date("m/d/Y")}}">{{date.date_de_parution|date("m/d/Y")}}</option>
+					{% endfor %}
+				</select>
+				<select class="form-select mt-2" onchange="filtrerParAuteur(event)">
+					<option selected>Auteur</option>
+					{% for auteur in auteurs %}
+						<option value="{{auteur.id}}">{{auteur.nomPrenom}}</option>
+					{% endfor %}
+				</select>
+				<select class="form-select mt-2" onchange="filtrerParGenre(event)">
+					<option selected>Genre</option>
+					{% for genre in genres %}
+						<option value="{{genre.id}}">{{genre.nom}}</option>
+					{% endfor %}
+				</select>
+</div>
+<div class="col-sm">
+    <div class="row">
+                <form method="POST" onsubmit="chercher(event)">
+				<div class="row g-3 align-items-center">
+					<div class="col-auto">
+					<input id="motCle" type="text" class="form-control" style="width:450px;"placeholder="Recherche d'un livre">
+					</div>
+					<div class="col-auto">
+					<button class="btn btn-primary my-2">Chercher</button>
+					</div>
+
+					<div class="col-auto">
+						{% if is_granted('ROLE_ADMIN') %}
+					    <a class="btn btn-success" href="{{ path('livre_new') }}">Ajouter</a>
+				        {% endif %}
+					</div>		
+				
+				</div>
+				</form>
+	</div>
+	<div class="row">
+<div class="container-fluid"> 
+    <div class="row justify-content-center"> 
+        <div class="col-md-12"> 
+{% for message in app.flashes('notice') %}
+            <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin: 0px 70px 10px 40px; ">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <i class="bi bi-info-circle"></i> {{ message }}
+            </div>
+{% endfor %}
+            <div class="card">
+
+			
+			     				
+				<table id="livres" class="table ">
+					<thead>
+						<tr style=" text-align: center; background-color:rgb(66, 163, 207)">
+							<th>Isbn</th>
+							<th>Titre</th>
+							<th>Nombre de pages</th>
+							<th>Date de parution</th>
+							<th>Note</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for livre in livres %}
+							<tr class="asmaa">
+								<td>{{ livre.isbn }}</td>
+								<td>{{ livre.titre }}</td>
+								<td>{{ livre.nombrePages }}</td>
+								<td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
+
+								<td>
+									<span id="livre-note-{{ livre.id }}">{{ livre.note }}</span>
+								</td>
+
+
+								<td style="width:200px; display:inline-block">
+								<a class="btn btn-primary" href="{{ path('livre_show', {'id': livre.id}) }}"><i class="bi bi-eye" style="color:white;font-size:20px;"></i></a>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                <a class="btn btn-success" href="{{ path('livre_edit', {'id': livre.id}) }}"><i class="bi bi-pen" style="color:white;font-size:20px;"></i></a>	
+										{{ include('livre/_delete_form.html.twig') }}
+									{% endif %}
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="7">Aucun résultat</td>
+							</tr>
+						{% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+     </div>	
+
+	<div class="row" style="margin-top:20px">
+        <div class="clearfix" style="padding-right: 70px">
+            <div style="display: flex; justify-content: flex-end; align-content: flex-end;">
+
+                <ul class="pagination">
+                    <li id="previous-page"><button style="padding:0px 10px;height: 38px;background-color: #313a43; color: #FFFFFF" href="javascript:void(0)">Précédent</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>	
+
+</div>
+</div>
+</div>
+{% endblock %}
+

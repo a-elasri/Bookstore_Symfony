@@ -1,0 +1,24 @@
+.log {
+    background-image: url("images/im2.jpg"); 
+    background-color: #cccccc;
+ height: 500px;
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: cover;
+ position: relative;  
+}
+/*
+{% block stylesheets %}
+
+<style>
+ body {
+     background-image: url("images/im2.jpg"); 
+     background-color: #cccccc;
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;     
+</style>
+ {% endblock %}*/
+ 
